@@ -19,16 +19,15 @@
                 <div class="grid gap-y-4">
                     <!-- Form Group -->
                     <div>
-
                         <label for="email" class="block text-sm mb-2 dark:text-white">Email address</label>
                         <div class="relative">
                             <input type="email" id="email" name="email"
                                 class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                aria-describedby="auth-error" value="{{ old('email') }}">
+                                aria-describedby="emailError" value="{{ old('email') }}">
                         </div>
                         @if ($errors->get('email'))
                             @foreach ($errors->get('email') as $error)
-                                <p class="text-xs text-red-600 mt-2" id="auth-error">{{ $error }}</p>
+                                <p class="text-xs text-red-600 mt-2" id="emailError">{{ $error }}</p>
                             @endforeach
                         @endif
                     </div>
@@ -44,11 +43,11 @@
                         <div class="relative">
                             <input type="password" id="password" name="password"
                                 class="py-2.5 sm:py-3 px-4 block w-full border-gray-200 rounded-lg sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
-                                aria-describedby="auth-error">
+                                aria-describedby="passwordError">
                         </div>
                         @if ($errors->get('password'))
                             @foreach ($errors->get('password') as $error)
-                                <p class="text-xs text-red-600 mt-2" id="auth-error">{{ $error }}</p>
+                                <p class="text-xs text-red-600 mt-2" id="passwordError">{{ $error }}</p>
                             @endforeach
                         @endif
                     </div>
@@ -56,7 +55,7 @@
 
                     @if ($errors->get('auth'))
                         @foreach ($errors->get('auth') as $error)
-                            <p class="text-xs text-red-600 mt-2" id="auth-error">{{ $error }}
+                            <p class="text-xs text-red-600 mt-2">{{ $error }}
                             </p>
                         @endforeach
                     @endif
