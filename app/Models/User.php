@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -10,18 +12,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-    ];
+    use HasFactory, Notifiable, Sluggable;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -32,6 +23,20 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    /**
+     * Return the sluggable configuration array for this model.
+     */
+    public function sluggable(): array
+    {
+        return [
+            'username' => [
+                'source' => ['first_name', 'last_name'],
+                'maxLength' => 40,
+                'onUpdate' => false,
+            ],
+        ];
+    }
 
     /**
      * Get the attributes that should be cast.
