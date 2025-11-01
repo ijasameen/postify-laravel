@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -31,7 +32,13 @@ class RegisteredUserController extends Controller
             'password' => $request->input('password'),
         ]);
 
+        event(new Registered($user));
+
         Auth::login($user, true);
+
+        if ($request->hasSession()) {
+            $request->session()->regenerate();
+        }
 
         return to_route('home', status: 301);
     }

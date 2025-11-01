@@ -5,6 +5,7 @@
             <h1 class="block text-2xl font-bold text-white sm:text-4xl">Welcome!</h1>
             @auth
                 <p class="mt-3 text-md text-gray-300">{{ Auth::user()->username }}</p>
+                <p class="mt-3 text-md text-gray-300">{{ Auth::user()->hasVerifiedEmail() ? 'Verified' : 'Unverified' }}</p>
             @endauth
             <p class="mt-3 text-lg text-gray-300">Stay tuned!</p>
             <div class="mt-5 flex flex-col justify-center items-center gap-2 sm:flex-row sm:gap-3">
