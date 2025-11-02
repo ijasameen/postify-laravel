@@ -14,11 +14,24 @@
                         <a class="hover:underline" href="#">{{ $post->user->fullName }}</a>
                     </div>
                     @if (Auth::user()?->id === $post->user->id)
-                        <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-sm border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                            href="{{ route('posts.edit', ['post' => $post->id, 'slug' => $post->slug]) }}">
-                            <span class="icon-[bx--pencil] size-6"></span>
-                            Edit
-                        </a>
+                        <div class="flex gap-2">
+                            <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-sm border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                                href="{{ route('posts.edit', ['post' => $post->id, 'slug' => $post->slug]) }}">
+                                <span class="icon-[bx--pencil] size-6"></span>
+                                Edit
+                            </a>
+                            <button type="submit" form="deleteForm"
+                                class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-sm border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-red-500/80 dark:focus:bg-neutral-700">
+                                <span class="icon-[bx--trash] size-6"></span>
+                                Delete
+                            </button>
+
+                            <form hidden id="deleteForm" method="POST" action="{{ route('posts.destroy') }}">
+                                @csrf
+                                @method('DELETE')
+                                <input hidden type="text" name="id" value="{{ $post->id }}">
+                            </form>
+                        </div>
                     @endif
                 </div>
                 <div class="mt-3 space-y-2 grow">

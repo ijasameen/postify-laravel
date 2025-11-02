@@ -36,6 +36,17 @@
                                                     href="{{ route('posts.edit', ['post' => $post->id, 'slug' => $post->slug]) }}">
                                                     Edit
                                                 </a>
+                                                <button type="submit" form="deleteForm-{{ $post->id }}"
+                                                    class="w-full flex items-center gap-x-3.5 py-2 px-3 rounded-sm text-sm text-zinc-800 hover:bg-zinc-100 focus:outline-hidden focus:bg-zinc-100 dark:text-neutral-400 dark:hover:bg-neutral-700 dark:hover:text-neutral-300 dark:focus:bg-neutral-700">
+                                                    Delete
+                                                </button>
+                                                <form hidden id="deleteForm-{{ $post->id }}" method="POST"
+                                                    action="{{ route('posts.destroy') }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input hidden type="text" name="id"
+                                                        value="{{ $post->id }}">
+                                                </form>
                                             </div>
                                         </div>
                                     </div>

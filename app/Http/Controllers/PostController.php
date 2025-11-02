@@ -91,8 +91,23 @@ class PostController extends Controller
         ], status: 301);
     }
 
-    public function destroy(Post $post)
+    public function destroy(Request $request)
     {
-        //
+        $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        $post = Post::with('user')->find($request->integer('id'));
+        $user = $request->user();
+
+        if (! $post) {
+            abort(404);
+        } elseif ($post->user->id !== $user->id) {
+            abort(401, 'Your unauthorized to edit this post.');
+        }
+
+        $post->delete();
+
+        return to_route('home', status: 301);
     }
 }
