@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Post;
 use App\Models\User;
 use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -25,5 +26,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(2)->create();
+
+        Post::factory(20)->create([
+            'user_id' => fn () => rand(1, 3),
+        ]);
     }
 }
