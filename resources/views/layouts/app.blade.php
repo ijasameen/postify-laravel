@@ -13,7 +13,9 @@
     <aside class="fixed m-6 w-48 px-4 py-3 rounded-xs bg-stone-100 shadow-xl dark:bg-zinc-800 dark:text-zinc-50">
         <nav class="space-y-3">
             <div class="flex justify-between">
-                <h2 class="font-bold text-lg">Postify</h2>
+                <h2 class="font-bold text-lg">
+                    <a href="{{ route('home') }}">Postify</a>
+                </h2>
                 <button type="button" class="hs-collapse-toggle open" id="hs-basic-collapse" aria-expanded="true"
                     aria-controls="hs-basic-collapse-heading" data-hs-collapse="#hs-basic-collapse-heading">
                     <span
@@ -73,7 +75,8 @@
                 <button class="size-11 flex justify-center items-center rounded-full bg-zinc-400">
                     <span class="icon-[bx--bell] size-6"></span>
                 </button>
-                <a href="#" class="h-9 pr-4 pl-3 flex justify-center items-center gap-2 rounded-xs bg-zinc-400">
+                <a href="{{ route('posts.create') }}"
+                    class="h-9 pr-4 pl-3 flex justify-center items-center gap-2 rounded-xs bg-zinc-400">
                     <span class="icon-[bx--pencil] size-6"></span>
                     New Post
                 </a>
