@@ -64,7 +64,7 @@
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <button class="icon-[bx--comment-detail] size-6"></button>
-                                        <span>4</span>
+                                        <span>{{ $post->replies_count }}</span>
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <button class="icon-[bx--bookmark] size-6"></button>

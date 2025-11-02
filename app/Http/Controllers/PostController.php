@@ -33,7 +33,12 @@ class PostController extends Controller
 
     public function show(Post $post, string $slug)
     {
-        $post->loadMissing('user');
+        $post->loadMissing([
+            'user',
+            'replies' => function ($q) {
+                return $q->with('user')->orderByDesc('created_at');
+            },
+        ]);
 
         if ($post->slug != $slug) {
             return to_route('posts.show', [

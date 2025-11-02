@@ -30,6 +30,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Post::class);
     }
 
+    public function replies(): HasMany
+    {
+        return $this->hasMany(Reply::class);
+    }
+
     protected function fullName(): Attribute
     {
         return Attribute::make(
