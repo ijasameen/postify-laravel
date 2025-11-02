@@ -14,6 +14,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::get('posts/edit/{post}/{slug}', [PostController::class, 'edit'])->name('posts.edit');
     Route::post('replies', [ReplyController::class, 'store'])->name('replies.store');
+    Route::delete('replies', [ReplyController::class, 'destroy'])->name('replies.destroy');
 });
 
 Route::get('posts/{post}/{slug}', [PostController::class, 'show'])->name('posts.show');

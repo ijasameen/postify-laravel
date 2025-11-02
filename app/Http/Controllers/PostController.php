@@ -102,13 +102,13 @@ class PostController extends Controller
             'id' => ['required', 'integer'],
         ]);
 
-        $post = Post::with('user')->find($request->integer('id'));
+        $post = Post::find($request->integer('id'));
         $user = $request->user();
 
         if (! $post) {
             abort(404);
-        } elseif ($post->user->id !== $user->id) {
-            abort(401, 'Your unauthorized to edit this post.');
+        } elseif ($post->user_id !== $user->id) {
+            abort(401, 'Your unauthorized to delete this post.');
         }
 
         $post->delete();

@@ -114,7 +114,8 @@
                                                 class="w-full flex items-center gap-x-3.5 py-2 px-3 rounded-sm text-sm text-zinc-800 hover:bg-zinc-100 focus:outline-hidden focus:bg-zinc-100 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-300 dark:focus:bg-zinc-700">
                                                 Delete
                                             </button>
-                                            <form hidden id="deleteForm-{{ $reply->id }}">
+                                            <form hidden method="POST" action="{{ route('replies.destroy') }}"
+                                                id="deleteForm-{{ $reply->id }}">
                                                 @csrf
                                                 @method('DELETE')
                                                 <input hidden type="text" name="id"

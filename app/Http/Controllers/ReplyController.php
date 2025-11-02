@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Reply;
 use Illuminate\Http\Request;
 
 class ReplyController extends Controller
@@ -27,5 +28,25 @@ class ReplyController extends Controller
         ]);
 
         return to_route('posts.show', ['post' => $post->id, 'slug' => $post->slug], 301);
+    }
+
+    public function destroy(Request $request)
+    {
+        $request->validate([
+            'id' => ['required', 'integer'],
+        ]);
+
+        $reply = Reply::with('post')->find($request->integer('id'));
+        $user = $request->user();
+
+        if (! $reply) {
+            abort(404);
+        } elseif ($reply->user_id != $user->id) {
+            abort(401, 'Your unauthorized to delete this reply.');
+        }
+
+        $reply->delete();
+
+        return to_route('posts.show', ['post' => $reply->post->id, 'slug' => $reply->post->slug], 301);
     }
 }
