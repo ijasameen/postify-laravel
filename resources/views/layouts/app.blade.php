@@ -61,8 +61,7 @@
                                 </div>
                             </div>
                             <button type="submit" form="logoutForm"
-                                class="mt-1 w-full flex items-center gap-x-3.5 py-2 px-3 rounded-lg text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-300 dark:focus:bg-zinc-700"
-                                href="#">
+                                class="mt-1 w-full flex items-center gap-x-3.5 py-2 px-3 rounded-sm text-sm text-gray-800 hover:bg-gray-100 focus:outline-hidden focus:bg-gray-100 dark:text-zinc-400 dark:hover:bg-zinc-700 dark:hover:text-zinc-300 dark:focus:bg-zinc-700">
                                 Sign Out
                             </button>
                             <form id="logoutForm" method="POST" action="{{ route('login.destroy') }}">
@@ -83,12 +82,12 @@
             @endauth
 
             @guest
-                <a class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                <a class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-sm border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
                     href="{{ route('register.create') }}">
                     Sign Up
                 </a>
-                <a class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
-                    href="{{ route('login.create') }}">
+                <a class="py-3 px-4 inline-flex items-center gap-x-2 text-sm font-medium rounded-sm border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                    href="{{ route('login') }}">
                     Sign In
                 </a>
             @endguest
