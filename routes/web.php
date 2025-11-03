@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileOverviewController;
 use App\Http\Controllers\ProfilePostsController;
 use App\Http\Controllers\ProfileRepliesController;
+use App\Http\Controllers\ProfileSavedController;
 use App\Http\Controllers\ReplyController;
 use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
@@ -15,7 +16,7 @@ Route::get('/', HomeController::class)->name('home');
 Route::get('{user:username}', ProfileOverviewController::class)->name('profile');
 Route::get('{user:username}/posts', ProfilePostsController::class)->name('profile.posts');
 Route::get('{user:username}/replies', ProfileRepliesController::class)->name('profile.replies');
-Route::get('{user:username}/saved', ProfilePostsController::class)->name('profile.saved');
+Route::get('{user:username}/saved', ProfileSavedController::class)->name('profile.saved');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('posts', [PostController::class, 'store'])->name('posts.store');
