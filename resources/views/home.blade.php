@@ -1,3 +1,7 @@
+@php
+    $user = auth()->user();
+@endphp
+
 <x-app-layout>
     <div class="w-full max-w-2xl mx-auto">
         <div class="flex gap-3">
@@ -9,7 +13,8 @@
         <ul class="mt-5 space-y-6 dark:text-stone-50">
             @foreach ($posts as $post)
                 <li>
-                    <article class="relative bg-stone-50 shadow-md shadow-zinc-950/60 rounded-xs p-3 dark:bg-zinc-800">
+                    <article id="{{ $post::getClassKey() }}-{{ $post->id }}"
+                        class="relative bg-stone-50 shadow-md shadow-zinc-950/60 rounded-xs p-3 dark:bg-zinc-800">
                         <a href="{{ route('posts.show', ['post' => $post->id, 'slug' => $post->slug]) }}"
                             class="absolute size-full"></a>
                         <div class="flex flex-col min-h-60 border-2 px-4 py-3 border-zinc-700 border-dashed">
@@ -59,8 +64,17 @@
                             <div class="flex items-end justify-between gap-2 ">
                                 <div class="relative w-fit mt-4 flex items-center gap-5">
                                     <div class="flex items-center gap-1">
-                                        <button class="icon-[bx--heart] size-6"></button>
-                                        <span>12</span>
+                                        <button type="submit" form="like-post-{{ $post->id }}-form"
+                                            class="{{ $post->isUserLiked($user) ? 'icon-[bxs--heart] size-6' : 'icon-[bx--heart] size-6' }}"></button>
+                                        <span>{{ $post->liked_users_count }}</span>
+                                        <form id="like-post-{{ $post->id }}-form" method="POST"
+                                            action="{{ route('likes.update') }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <input hidden type="text" name="likable_type_alias"
+                                                value="{{ $post::getClassKey() }}">
+                                            <input hidden type="text" name="likable_id" value="{{ $post->id }}">
+                                        </form>
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <button class="icon-[bx--comment-detail] size-6"></button>

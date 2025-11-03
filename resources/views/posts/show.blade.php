@@ -1,3 +1,7 @@
+@php
+    $user = auth()->user();
+@endphp
+
 <x-app-layout>
     <div class="max-w-4xl mx-auto">
         <a href="{{ route('home') }}" class="block mb-3">
@@ -39,8 +43,15 @@
             </div>
             <div class="mt-4 flex items-center gap-5">
                 <div class="flex items-center gap-1">
-                    <button class="icon-[bx--heart] size-6"></button>
-                    <span>12</span>
+                    <button type="submit" form="like-post-{{ $post->id }}-form"
+                        class="{{ $post->isUserLiked($user) ? 'icon-[bxs--heart] size-6' : 'icon-[bx--heart] size-6' }}"></button>
+                    <span>{{ $post->liked_users_count }}</span>
+                    <form id="like-post-{{ $post->id }}-form" method="POST" action="{{ route('likes.update') }}">
+                        @csrf
+                        @method('PUT')
+                        <input hidden type="text" name="likable_type_alias" value="post">
+                        <input hidden type="text" name="likable_id" value="{{ $post->id }}">
+                    </form>
                 </div>
                 <div class="flex items-center gap-1">
                     <button class="icon-[bx--comment-detail] size-6"></button>
@@ -86,7 +97,8 @@
         <ul class="mt-6 ml-4 space-y-6 dark:text-zinc-50">
             @foreach ($post->replies as $reply)
                 <li class="flex group">
-                    <div class="w-full bg-stone-50 shadow-md shadow-zinc-950/60 rounded-xs p-4 dark:bg-zinc-800">
+                    <div id="{{ $reply->getClassKey() }}-{{ $reply->id }}"
+                        class="w-full bg-stone-50 shadow-md shadow-zinc-950/60 rounded-xs p-4 dark:bg-zinc-800">
                         <div class="flex gap-2 items-start justify-between">
                             <div class="relative w-fit flex items-center gap-2">
                                 <span class="font-bold">from: </span>
@@ -131,8 +143,17 @@
                         </div>
                         <div class="mt-5 flex items-center gap-5">
                             <div class="flex items-center gap-1">
-                                <button class="icon-[bx--heart] size-5"></button>
-                                <span>12</span>
+                                <button type="submit" form="like-reply-{{ $reply->id }}-form"
+                                    class="{{ $reply->isUserLiked($user) ? 'icon-[bxs--heart] size-5' : 'icon-[bx--heart] size-5' }}"></button>
+                                <span>{{ $reply->liked_users_count }}</span>
+                                <form id="like-reply-{{ $reply->id }}-form" method="POST"
+                                    action="{{ route('likes.update') }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <input hidden type="text" name="likable_type_alias"
+                                        value="{{ $reply::getClassKey() }}">
+                                    <input hidden type="text" name="likable_id" value="{{ $reply->id }}">
+                                </form>
                             </div>
                             <div class="flex items-center gap-1">
                                 <button class="icon-[bx--bookmark] size-5"></

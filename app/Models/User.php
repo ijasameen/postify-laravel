@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -33,6 +34,16 @@ class User extends Authenticatable implements MustVerifyEmail
     public function replies(): HasMany
     {
         return $this->hasMany(Reply::class)->chaperone();
+    }
+
+    public function likedPosts(): MorphToMany
+    {
+        return $this->morphedByMany(Post::class, 'likable', 'likes');
+    }
+
+    public function likedReplies(): MorphToMany
+    {
+        return $this->morphedByMany(Reply::class, 'likable', 'likes');
     }
 
     protected function fullName(): Attribute

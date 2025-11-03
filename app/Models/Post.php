@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\HasIdentity;
+use App\Traits\Likable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +14,7 @@ use Illuminate\Support\Carbon;
 class Post extends Model
 {
     /** @use HasFactory<\Database\Factories\PostFactory> */
-    use HasFactory, Sluggable;
+    use HasFactory, HasIdentity, Likable, Sluggable;
 
     public function user(): BelongsTo
     {

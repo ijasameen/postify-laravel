@@ -2,8 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Post;
+use App\Models\Reply;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -31,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
         Model::preventLazyLoading(! app()->isProduction());
         Model::unguard();
         Model::shouldBeStrict();
+
+        Relation::enforceMorphMap([
+            Post::getClassKey() => Post::class,
+            Reply::getClassKey() => Reply::class,
+        ]);
 
         Password::defaults(function () {
             return app()->isProduction()

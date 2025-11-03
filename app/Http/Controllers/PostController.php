@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -33,10 +34,19 @@ class PostController extends Controller
 
     public function show(Post $post, string $slug)
     {
-        $post->loadMissing([
+        $user_id = Auth::id();
+        $post->loadCount('likedUsers')->loadMissing([
             'user',
-            'replies' => function ($q) {
-                return $q->with('user')->orderByDesc('created_at');
+            'replies' => function ($query) use ($user_id) {
+                return $query
+                    ->withCount('likedUsers')
+                    ->with(['user', 'likedUsers' => function ($query) use ($user_id) {
+                        return $query->where('id', $user_id);
+                    }])
+                    ->orderByDesc('created_at');
+            },
+            'likedUsers' => function ($query) use ($user_id) {
+                return $query->where('user_id', $user_id);
             },
         ]);
 
