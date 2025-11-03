@@ -9,11 +9,14 @@ class HomeController extends Controller
 {
     public function __invoke()
     {
-        $posts = Post::withCount(['replies', 'likedUsers'])
+        $posts = Post::withCount(['replies', 'likedUsers', 'savedUsers'])
             ->orderByDesc('created_at')
             ->with([
                 'user',
                 'likedUsers' => function ($query) {
+                    return $query->where('user_id', Auth::id());
+                },
+                'savedUsers' => function ($query) {
                     return $query->where('user_id', Auth::id());
                 },
             ])

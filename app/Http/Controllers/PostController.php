@@ -35,17 +35,25 @@ class PostController extends Controller
     public function show(Post $post, string $slug)
     {
         $user_id = Auth::id();
-        $post->loadCount('likedUsers')->loadMissing([
+        $post->loadCount(['likedUsers', 'savedUsers'])->loadMissing([
             'user',
             'replies' => function ($query) use ($user_id) {
                 return $query
-                    ->withCount('likedUsers')
-                    ->with(['user', 'likedUsers' => function ($query) use ($user_id) {
-                        return $query->where('id', $user_id);
-                    }])
-                    ->orderByDesc('created_at');
+                    ->withCount(['likedUsers', 'savedUsers'])
+                    ->with([
+                        'user',
+                        'likedUsers' => function ($query) use ($user_id) {
+                            return $query->where('id', $user_id);
+                        },
+                        'savedUsers' => function ($query) use ($user_id) {
+                            return $query->where('id', $user_id);
+                        },
+                    ])->orderByDesc('created_at');
             },
             'likedUsers' => function ($query) use ($user_id) {
+                return $query->where('user_id', $user_id);
+            },
+            'savedUsers' => function ($query) use ($user_id) {
                 return $query->where('user_id', $user_id);
             },
         ]);
