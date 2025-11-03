@@ -111,7 +111,8 @@
                             <div class="relative w-fit flex items-center gap-2">
                                 <span class="font-bold">from: </span>
                                 <span class="rounded-full size-8 dark:bg-zinc-600"></span>
-                                <a class="relative hover:underline" href="#">{{ $reply->user->fullName }}</a>
+                                <a class="relative hover:underline"
+                                    href="{{ route('profile', ['user' => $reply->user->username]) }}">{{ $reply->user->fullName }}</a>
                             </div>
                             @if ($user?->id === $reply->user->id)
                                 <div class="hs-dropdown relative inline-flex">
