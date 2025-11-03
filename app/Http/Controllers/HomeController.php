@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
-use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -13,12 +12,8 @@ class HomeController extends Controller
             ->orderByDesc('created_at')
             ->with([
                 'user',
-                'likedUsers' => function ($query) {
-                    return $query->where('user_id', Auth::id());
-                },
-                'savedUsers' => function ($query) {
-                    return $query->where('user_id', Auth::id());
-                },
+                'likedAuthenticatedUsers',
+                'savedAuthenticatedUsers',
             ])
             ->get();
 

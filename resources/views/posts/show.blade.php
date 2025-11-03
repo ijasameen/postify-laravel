@@ -1,5 +1,5 @@
 @php
-    $user = auth()->user();
+    $user = Auth::user();
 @endphp
 
 <x-app-layout>
@@ -14,9 +14,10 @@
                 <div class="flex items-center gap-2">
                     <span class="font-bold">from: </span>
                     <span class="rounded-full size-8 dark:bg-zinc-600"></span>
-                    <a class="hover:underline" href="#">{{ $post->user->fullName }}</a>
+                    <a class="hover:underline"
+                        href="{{ route('profile', ['user' => $post->user->username]) }}">{{ $post->user->fullName }}</a>
                 </div>
-                @if (Auth::user()?->id === $post->user->id)
+                @if ($user?->id === $post->user->id)
                     <div class="flex gap-2">
                         <a class="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-sm border border-zinc-200 bg-white text-zinc-800 shadow-2xs hover:bg-zinc-50 focus:outline-hidden focus:bg-zinc-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-zinc-800 dark:border-zinc-700 dark:text-white dark:hover:bg-zinc-700 dark:focus:bg-zinc-700"
                             href="{{ route('posts.edit', ['post' => $post->id, 'slug' => $post->slug]) }}">
@@ -44,7 +45,7 @@
             <div class="mt-4 flex items-center gap-5">
                 <div class="flex items-center gap-1">
                     <button type="submit" form="like-post-{{ $post->id }}-form"
-                        class="{{ $post->isUserLiked($user) ? 'icon-[bxs--heart] size-6' : 'icon-[bx--heart] size-6' }}"></button>
+                        class="{{ $post->isAuthenticatedUserLiked() > 0 ? 'icon-[bxs--heart] size-6' : 'icon-[bx--heart] size-6' }}"></button>
                     <span>{{ $post->liked_users_count }}</span>
                     <form id="like-post-{{ $post->id }}-form" method="POST" action="{{ route('likes.update') }}">
                         @csrf
@@ -59,7 +60,7 @@
                 </div>
                 <div class="flex items-center gap-1">
                     <button type="submit" form="save-post-{{ $post->id }}-form"
-                        class="{{ $post->isUsersaved($user) ? 'icon-[bxs--bookmark] size-6' : 'icon-[bx--bookmark] size-6' }}"></button>
+                        class="{{ $post->isAuthenticatedUserSaved() ? 'icon-[bxs--bookmark] size-6' : 'icon-[bx--bookmark] size-6' }}"></button>
                     <form id="save-post-{{ $post->id }}-form" method="POST" action="{{ route('saves.update') }}">
                         @csrf
                         @method('PUT')
@@ -74,7 +75,7 @@
         </div>
         <div class="mt-8">
             <h2 class="dark:text-zinc-50 font-bold text-xl">Replies</h2>
-            @if (Auth::user()?->id === $post->user->id)
+            @if ($user?->id === $post->user->id)
                 <form method="POST" action={{ route('replies.store') }}>
                     <div class="mt-4 relative">
                         @csrf
@@ -112,7 +113,7 @@
                                 <span class="rounded-full size-8 dark:bg-zinc-600"></span>
                                 <a class="relative hover:underline" href="#">{{ $reply->user->fullName }}</a>
                             </div>
-                            @if (Auth::user()?->id === $reply->user->id)
+                            @if ($user?->id === $reply->user->id)
                                 <div class="hs-dropdown relative inline-flex">
                                     <button id="relative hs-dropdown-custom-icon-trigger" type="button"
                                         class="hs-dropdown-toggle flex justify-center items-center text-sm font-semibold rounded-sm"
@@ -151,7 +152,7 @@
                         <div class="mt-5 flex items-center gap-5">
                             <div class="flex items-center gap-1">
                                 <button type="submit" form="like-reply-{{ $reply->id }}-form"
-                                    class="{{ $reply->isUserLiked($user) ? 'icon-[bxs--heart] size-5' : 'icon-[bx--heart] size-5' }}"></button>
+                                    class="{{ $reply->isAuthenticatedUserLiked() ? 'icon-[bxs--heart] size-5' : 'icon-[bx--heart] size-5' }}"></button>
                                 <span>{{ $reply->liked_users_count }}</span>
                                 <form id="like-reply-{{ $reply->id }}-form" method="POST"
                                     action="{{ route('likes.update') }}">
@@ -164,7 +165,7 @@
                             </div>
                             <div class="flex items-center gap-1">
                                 <button type="submit" form="save-reply-{{ $reply->id }}-form"
-                                    class="{{ $reply->isUsersaved($user) ? 'icon-[bxs--bookmark] size-5' : 'icon-[bx--bookmark] size-5' }}"></button>
+                                    class="{{ $reply->isAuthenticatedUserSaved() ? 'icon-[bxs--bookmark] size-5' : 'icon-[bx--bookmark] size-5' }}"></button>
                                 <form id="save-reply-{{ $reply->id }}-form" method="POST"
                                     action="{{ route('saves.update') }}">
                                     @csrf

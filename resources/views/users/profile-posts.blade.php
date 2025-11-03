@@ -2,7 +2,7 @@
     $user = Auth::user();
 @endphp
 
-<x-app-layout>
+<x-profile-layout :$profileOwner>
     <div class="w-full max-w-2xl mx-auto">
         <div class="flex gap-3">
             <button class="flex items-center gap-2 justify-between pl-3 pr-2 py-1 bg-zinc-400 rounded-xs">
@@ -11,7 +11,7 @@
             </button>
         </div>
         <ul class="mt-5 space-y-6 dark:text-stone-50">
-            @foreach ($posts as $post)
+            @foreach ($profileOwner->posts as $post)
                 <li>
                     <article id="{{ $post::getClassKey() }}-{{ $post->id }}"
                         class="relative bg-stone-50 shadow-md shadow-zinc-950/60 rounded-xs p-3 dark:bg-zinc-800">
@@ -105,4 +105,4 @@
             @endforeach
         </ul>
     </div>
-</x-app-layout>
+</x-profile-layout>

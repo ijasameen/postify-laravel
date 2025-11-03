@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Auth;
 
 trait Savable
 {
@@ -12,16 +13,17 @@ trait Savable
         return $this->morphToMany(User::class, 'savable', 'saves');
     }
 
-    public function isUserSaved(?User $user): bool
+    public function savedAuthenticatedUsers(): MorphToMany
     {
-        if (is_null($user)) {
-            return false;
+        return $this->savedUsers()->where('id', Auth::id());
+    }
+
+    public function isAuthenticatedUserSaved(): bool
+    {
+        if ($this->relationLoaded('savedAuthenticatedUsers')) {
+            return $this->savedAuthenticatedUsers->count() > 0;
         }
 
-        if ($this->relationLoaded('savedUsers')) {
-            return $this->savedUsers->containsStrict('id', $user->id);
-        }
-
-        return $this->savedUsers()->where('id', $user->id)->exists();
+        return $this->savedAuthenticatedUsers()->count() > 0;
     }
 }

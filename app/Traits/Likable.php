@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Facades\Auth;
 
 trait Likable
 {
@@ -12,16 +13,17 @@ trait Likable
         return $this->morphToMany(User::class, 'likable', 'likes');
     }
 
-    public function isUserLiked(?User $user): bool
+    public function likedAuthenticatedUsers(): MorphToMany
     {
-        if (is_null($user)) {
-            return false;
+        return $this->likedUsers()->where('id', Auth::id());
+    }
+
+    public function isAuthenticatedUserLiked(): bool
+    {
+        if ($this->relationLoaded('likedAuthenticatedUsers')) {
+            return $this->likedAuthenticatedUsers->count() > 0;
         }
 
-        if ($this->relationLoaded('likedUsers')) {
-            return $this->likedUsers->containsStrict('id', $user->id);
-        }
-
-        return $this->likedUsers()->where('id', $user->id)->exists();
+        return $this->likedAuthenticatedUsers()->count() > 0;
     }
 }

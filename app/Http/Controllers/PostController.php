@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -34,29 +33,19 @@ class PostController extends Controller
 
     public function show(Post $post, string $slug)
     {
-        $user_id = Auth::id();
-        $post->loadCount(['likedUsers', 'savedUsers'])->loadMissing([
-            'user',
-            'replies' => function ($query) use ($user_id) {
-                return $query
-                    ->withCount(['likedUsers', 'savedUsers'])
-                    ->with([
-                        'user',
-                        'likedUsers' => function ($query) use ($user_id) {
-                            return $query->where('id', $user_id);
-                        },
-                        'savedUsers' => function ($query) use ($user_id) {
-                            return $query->where('id', $user_id);
-                        },
-                    ])->orderByDesc('created_at');
-            },
-            'likedUsers' => function ($query) use ($user_id) {
-                return $query->where('user_id', $user_id);
-            },
-            'savedUsers' => function ($query) use ($user_id) {
-                return $query->where('user_id', $user_id);
-            },
-        ]);
+        $post
+            ->loadCount(['likedUsers', 'savedUsers'])
+            ->loadMissing([
+                'user',
+                'replies' => function ($query) {
+                    return $query
+                        ->orderByDesc('created_at')
+                        ->withCount(['likedUsers', 'savedUsers'])
+                        ->with(['user', 'likedAuthenticatedUsers', 'savedAuthenticatedUsers']);
+                },
+                'likedAuthenticatedUsers',
+                'savedAuthenticatedUsers',
+            ]);
 
         if ($post->slug != $slug) {
             return to_route('posts.show', [
