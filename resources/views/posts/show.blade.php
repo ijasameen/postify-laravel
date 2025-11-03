@@ -58,7 +58,14 @@
                     <span>{{ count($post->replies) }}</span>
                 </div>
                 <div class="flex items-center gap-1">
-                    <button class="icon-[bx--bookmark] size-6"></button>
+                    <button type="submit" form="save-post-{{ $post->id }}-form"
+                        class="{{ $post->isUsersaved($user) ? 'icon-[bxs--bookmark] size-6' : 'icon-[bx--bookmark] size-6' }}"></button>
+                    <form id="save-post-{{ $post->id }}-form" method="POST" action="{{ route('saves.update') }}">
+                        @csrf
+                        @method('PUT')
+                        <input hidden type="text" name="savable_type_alias" value="{{ $post::getClassKey() }}">
+                        <input hidden type="text" name="savable_id" value="{{ $post->id }}">
+                    </form>
                 </div>
                 <div class="flex items-center gap-1">
                     <button class="icon-[bx--share-alt] size-6"></button>
@@ -156,10 +163,16 @@
                                 </form>
                             </div>
                             <div class="flex items-center gap-1">
-                                <button class="icon-[bx--bookmark] size-5"></
-                                        class="dark:text-zinc-50 font-bold text-xl"buttonRepliesdiv6 mt-8 <div
-                                        class="flex items-center gap-1">
-                                    <button class="icon-[bx--share-alt] size-5"></button>
+                                <button type="submit" form="save-reply-{{ $reply->id }}-form"
+                                    class="{{ $reply->isUsersaved($user) ? 'icon-[bxs--bookmark] size-5' : 'icon-[bx--bookmark] size-5' }}"></button>
+                                <form id="save-reply-{{ $reply->id }}-form" method="POST"
+                                    action="{{ route('saves.update') }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <input hidden type="text" name="savable_type_alias"
+                                        value="{{ $reply::getClassKey() }}">
+                                    <input hidden type="text" name="savable_id" value="{{ $reply->id }}">
+                                </form>
                             </div>
                         </div>
                     </div>

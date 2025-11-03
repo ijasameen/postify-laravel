@@ -4,6 +4,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReplyController;
+use App\Http\Controllers\SaveController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
@@ -19,6 +20,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('likes', [LikeController::class, 'store'])->name('likes.store');
     Route::put('likes', [LikeController::class, 'update'])->name('likes.update');
     Route::delete('likes', [LikeController::class, 'destroy'])->name('likes.destroy');
+    Route::post('saves', [SaveController::class, 'store'])->name('saves.store');
+    Route::put('saves', [SaveController::class, 'update'])->name('saves.update');
+    Route::delete('saves', [SaveController::class, 'destroy'])->name('saves.destroy');
 });
 
 Route::get('posts/{post}/{slug}', [PostController::class, 'show'])->name('posts.show');

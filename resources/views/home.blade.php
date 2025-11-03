@@ -81,7 +81,16 @@
                                         <span>{{ $post->replies_count }}</span>
                                     </div>
                                     <div class="flex items-center gap-1">
-                                        <button class="icon-[bx--bookmark] size-6"></button>
+                                        <button type="submit" form="save-post-{{ $post->id }}-form"
+                                            class="{{ $post->isUsersaved($user) ? 'icon-[bxs--bookmark] size-6' : 'icon-[bx--bookmark] size-6' }}"></button>
+                                        <form id="save-post-{{ $post->id }}-form" method="POST"
+                                            action="{{ route('saves.update') }}">
+                                            @csrf
+                                            @method('PUT')
+                                            <input hidden type="text" name="savable_type_alias"
+                                                value="{{ $post::getClassKey() }}">
+                                            <input hidden type="text" name="savable_id" value="{{ $post->id }}">
+                                        </form>
                                     </div>
                                     <div class="flex items-center gap-1">
                                         <button class="icon-[bx--share-alt] size-6"></button>
