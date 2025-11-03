@@ -21,7 +21,7 @@ class Post extends Model
 
     public function replies(): HasMany
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->chaperone();
     }
 
     public function getPostedTimeText(): string

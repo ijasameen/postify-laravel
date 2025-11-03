@@ -27,12 +27,12 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function posts(): HasMany
     {
-        return $this->hasMany(Post::class);
+        return $this->hasMany(Post::class)->chaperone();
     }
 
     public function replies(): HasMany
     {
-        return $this->hasMany(Reply::class);
+        return $this->hasMany(Reply::class)->chaperone();
     }
 
     protected function fullName(): Attribute
