@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', HomeController::class)->name('home');
 
+require __DIR__.'/auth.php';
+
 Route::get('{user:username}', ProfileOverviewController::class)->name('profile');
 Route::get('{user:username}/posts', ProfilePostsController::class)->name('profile.posts');
 Route::get('{user:username}/replies', ProfileRepliesController::class)->name('profile.replies');
@@ -38,5 +40,3 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::get('posts/{post}/{slug}', [PostController::class, 'show'])->name('posts.show');
-
-require __DIR__.'/auth.php';
