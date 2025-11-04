@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('saves', function (Blueprint $table) {
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->numericMorphs('Savable');
+            $table->numericMorphs('savable');
             $table->timestamp('created_at')->useCurrent();
             $table->unique(['user_id', 'savable_type', 'savable_id']);
         });

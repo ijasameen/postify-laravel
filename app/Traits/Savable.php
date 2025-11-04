@@ -2,12 +2,19 @@
 
 namespace App\Traits;
 
+use App\Models\Save;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Facades\Auth;
 
 trait Savable
 {
+    public function saves(): MorphMany
+    {
+        return $this->morphMany(Save::class, 'savable');
+    }
+
     public function savedUsers(): MorphToMany
     {
         return $this->morphToMany(User::class, 'savable', 'saves');
