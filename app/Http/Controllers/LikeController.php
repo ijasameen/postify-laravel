@@ -9,9 +9,9 @@ use App\Actions\Likable\Like;
 use App\Actions\Likable\ToggleLike;
 use App\Actions\Likable\Unlike;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class LikeController extends Controller
 {

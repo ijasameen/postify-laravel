@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Actions\Savable;
 
+use App\Models\Post;
+use App\Models\Reply;
 use App\Models\User;
 
 final class UnSave
 {
-    public function handle(User $user, mixed $savable): bool
+    public function handle(?User $user, Post|Reply|null $savable): bool
     {
-        if (! $savable) {
+        if (! $user || ! $savable) {
             return false;
         }
 

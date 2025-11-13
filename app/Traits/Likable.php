@@ -10,11 +10,13 @@ use Illuminate\Support\Facades\Auth;
 
 trait Likable
 {
+    /** @return MorphToMany<User,$this> */
     public function likedUsers(): MorphToMany
     {
         return $this->morphToMany(User::class, 'likable', 'likes');
     }
 
+    /** @return MorphToMany<User,$this> */
     public function likedAuthenticatedUsers(): MorphToMany
     {
         return $this->likedUsers()->where('id', Auth::id());

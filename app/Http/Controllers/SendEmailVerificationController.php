@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 final class SendEmailVerificationController extends Controller
 {
-    public function __invoke(Request $request)
+    public function __invoke(Request $request): RedirectResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
+        $user = $request->user();
+        abort_unless($user, 500, 'Something went wrong.');
+
+        if ($user->hasVerifiedEmail()) {
             return to_route('home', status: 301);
         }
 
-        $request->user()->sendEmailVerificationNotification();
+        $user->sendEmailVerificationNotification();
 
         return back()->with('message', 'Verification link sent!');
     }

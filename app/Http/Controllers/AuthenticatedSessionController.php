@@ -6,11 +6,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Cache\RateLimiter;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class AuthenticatedSessionController extends Controller
 {
@@ -26,7 +26,7 @@ final class AuthenticatedSessionController extends Controller
             'password' => ['required', 'string'],
         ]);
 
-        $email = Str::lower($request->string('email'));
+        $email = Str::lower((string) $request->string('email'));
         $password = $request->string('password');
         $remember = $request->boolean('remember');
 

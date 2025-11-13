@@ -6,8 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -15,12 +15,12 @@ use Illuminate\Validation\Rules\Password;
 
 final class RegisteredUserController extends Controller
 {
-    public function create(): Factory|View
+    public function create(): View
     {
         return view('auth.register');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'firstName' => ['required', 'string', 'min:2', 'max:100'],
@@ -30,10 +30,10 @@ final class RegisteredUserController extends Controller
         ]);
 
         $user = User::query()->create([
-            'first_name' => $request->input('firstName'),
-            'last_name' => $request->input('lastName'),
-            'email' => Str::lower($request->input('email')),
-            'password' => $request->input('password'),
+            'first_name' => $request->string('firstName'),
+            'last_name' => $request->string('lastName'),
+            'email' => Str::lower((string) $request->string('email')),
+            'password' => $request->string('password'),
         ]);
 
         event(new Registered($user));

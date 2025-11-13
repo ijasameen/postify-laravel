@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Actions\Likable;
 
+use App\Models\Post;
+use App\Models\Reply;
 use App\Models\User;
 
 final class Unlike
 {
-    public function handle(User $user, mixed $likable): bool
+    public function handle(?User $user, Post|Reply|null $likable): bool
     {
-        if (! $likable) {
+        if (! $likable || ! $user) {
             return false;
         }
 

@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class PostController extends Controller
 {
@@ -24,6 +25,9 @@ final class PostController extends Controller
         ]);
 
         $user = $request->user();
+        abort_unless($user, 500, 'Somehing went wrong.');
+
+        /** @var Post */
         $post = $user->posts()->create([
             'title' => $request->input('title'),
             'summary' => $request->input('summary'),
@@ -63,7 +67,10 @@ final class PostController extends Controller
     {
         $post->load('user');
 
-        abort_if($post->user->id !== $request->user()->id, 401, 'Your unauthorized to edit this post.');
+        /** @var User */
+        $user = $request->user();
+
+        abort_if($post->user_id !== $user->id, 401, 'Your unauthorized to edit this post.');
 
         if ($post->slug !== $slug) {
             return to_route('posts.edit', [
@@ -83,12 +90,15 @@ final class PostController extends Controller
             'summary' => ['required', 'string', 'max:300'],
         ]);
 
+        /** @var ?Post */
         $post = Post::with('user')->find($request->integer('id'));
+
+        /** @var User */
         $user = $request->user();
 
         if (! $post) {
             abort(404);
-        } elseif ($post->user->id !== $user->id) {
+        } elseif ($post->user_id !== $user->id) {
             abort(401, 'Your unauthorized to edit this post.');
         }
 
@@ -109,7 +119,10 @@ final class PostController extends Controller
             'id' => ['required', 'integer'],
         ]);
 
+        /** @var ?Post */
         $post = Post::query()->find($request->integer('id'));
+
+        /** @var User */
         $user = $request->user();
 
         if (! $post) {
