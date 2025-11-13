@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Likable;
 
 use App\Models\User;
 
-class ToggleLike
+final class ToggleLike
 {
-    public function __construct(protected Like $like, protected Unlike $unlike) {}
+    public function __construct(private Like $like, private Unlike $unlike) {}
 
     public function handle(User $user, mixed $likable): bool
     {
@@ -16,8 +18,9 @@ class ToggleLike
 
         if ($likable->likedUsers()->where('user_id', $user->id)->exists()) {
             return $this->unlike->handle($user, $likable);
-        } else {
-            return $this->like->handle($user, $likable);
         }
+
+        return $this->like->handle($user, $likable);
+
     }
 }

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Reply;
 use Illuminate\Http\Request;
 
-class ReplyController extends Controller
+final class ReplyController extends Controller
 {
     public function store(Request $request)
     {
@@ -41,7 +43,7 @@ class ReplyController extends Controller
 
         if (! $reply) {
             abort(404);
-        } elseif ($reply->user_id != $user->id) {
+        } elseif ($reply->user_id !== $user->id) {
             abort(401, 'Your unauthorized to delete this reply.');
         }
 

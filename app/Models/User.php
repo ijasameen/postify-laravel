@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
@@ -11,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements MustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, Sluggable;
@@ -61,15 +63,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->morphedByMany(Reply::class, 'savable', 'saves');
     }
 
-    protected function fullName(): Attribute
-    {
-        return Attribute::make(
-            get: function (mixed $value, array $attributes) {
-                return $attributes['first_name'].' '.$attributes['last_name'];
-            },
-        );
-    }
-
     /**
      * Return the sluggable configuration array for this model.
      */
@@ -82,6 +75,15 @@ class User extends Authenticatable implements MustVerifyEmail
                 'onUpdate' => false,
             ],
         ];
+    }
+
+    protected function fullName(): Attribute
+    {
+        return Attribute::make(
+            get: function (mixed $value, array $attributes) {
+                return $attributes['first_name'].' '.$attributes['last_name'];
+            },
+        );
     }
 
     /**

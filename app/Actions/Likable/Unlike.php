@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Likable;
 
 use App\Models\User;
 
-class Unlike
+final class Unlike
 {
     public function handle(User $user, mixed $likable): bool
     {

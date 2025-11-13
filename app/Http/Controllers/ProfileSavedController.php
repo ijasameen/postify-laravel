@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Reply;
 use App\Models\User;
 
-class ProfileSavedController extends Controller
+final class ProfileSavedController extends Controller
 {
     public function __invoke(User $user)
     {

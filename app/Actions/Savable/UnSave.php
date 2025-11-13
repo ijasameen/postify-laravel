@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Savable;
 
 use App\Models\User;
 
-class UnSave
+final class UnSave
 {
     public function handle(User $user, mixed $savable): bool
     {

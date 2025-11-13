@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
-class VerifyEmailController extends Controller
+final class VerifyEmailController extends Controller
 {
     public function __invoke(EmailVerificationRequest $request)
     {

@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
 
-class ProfilePostsController extends Controller
+final class ProfilePostsController extends Controller
 {
     public function __invoke(User $user)
     {

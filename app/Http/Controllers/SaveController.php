@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\GetMorphable;
@@ -10,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
-class SaveController extends Controller
+final class SaveController extends Controller
 {
     public function __construct(
         protected GetMorphable $getMorphable,
@@ -35,9 +37,9 @@ class SaveController extends Controller
             $to = back()->getTargetUrl().'#'.$savableTypeAlias.'-'.$savableId;
 
             return redirect($to);
-        } else {
-            abort(404);
         }
+        abort(404);
+
     }
 
     public function update(Request $request, ToggleSave $toggleSave)
@@ -59,9 +61,8 @@ class SaveController extends Controller
             $to = back()->getTargetUrl().'#'.$savableTypeAlias.'-'.$savableId;
 
             return redirect($to);
-        } else {
-            abort(404);
         }
+        abort(404);
 
         return back(301);
     }
@@ -85,9 +86,8 @@ class SaveController extends Controller
             $to = back()->getTargetUrl().'#'.$savableTypeAlias.'-'.$savableId;
 
             return redirect($to);
-        } else {
-            abort(404);
         }
+        abort(404);
 
         return back(301);
     }

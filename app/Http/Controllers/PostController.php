@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+final class PostController extends Controller
 {
     public function create()
     {
@@ -47,7 +49,7 @@ class PostController extends Controller
                 'savedAuthenticatedUsers',
             ]);
 
-        if ($post->slug != $slug) {
+        if ($post->slug !== $slug) {
             return to_route('posts.show', [
                 'post' => $post->id,
                 'slug' => $post->slug,
@@ -61,11 +63,11 @@ class PostController extends Controller
     {
         $post->load('user');
 
-        if ($post->user != $request->user()) {
+        if ($post->user !== $request->user()) {
             abort(401, 'Your unauthorized to edit this post.');
         }
 
-        if ($post->slug != $slug) {
+        if ($post->slug !== $slug) {
             return to_route('posts.edit', [
                 'post' => $post->id,
                 'slug' => $post->slug,

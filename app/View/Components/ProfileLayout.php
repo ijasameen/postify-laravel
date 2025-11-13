@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\View\Components;
 
 use App\Models\User;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
-class ProfileLayout extends Component
+final class ProfileLayout extends Component
 {
     public function __construct(public User $profileOwner) {}
 
@@ -20,10 +22,10 @@ class ProfileLayout extends Component
         $data['repliesRoute'] = route('profile.replies', ['user' => $this->profileOwner->username], false);
         $data['savedRoute'] = route('profile.saved', ['user' => $this->profileOwner->username], false);
 
-        $data['isOverviewActive'] = request()->is(substr($data['overviewRoute'], 1));
-        $data['isPostsActive'] = request()->is(substr($data['postsRoute'], 1));
-        $data['isRepliesActive'] = request()->is(substr($data['repliesRoute'], 1));
-        $data['isSavedActive'] = request()->is(substr($data['savedRoute'], 1));
+        $data['isOverviewActive'] = request()->is(mb_substr($data['overviewRoute'], 1));
+        $data['isPostsActive'] = request()->is(mb_substr($data['postsRoute'], 1));
+        $data['isRepliesActive'] = request()->is(mb_substr($data['repliesRoute'], 1));
+        $data['isSavedActive'] = request()->is(mb_substr($data['savedRoute'], 1));
 
         return view('layouts.profile', $data);
     }

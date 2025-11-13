@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Savable;
 
 use App\Models\User;
 
-class ToggleSave
+final class ToggleSave
 {
-    public function __construct(protected Save $save, protected UnSave $unSave) {}
+    public function __construct(private Save $save, private UnSave $unSave) {}
 
     public function handle(User $user, mixed $savable): bool
     {
@@ -16,8 +18,9 @@ class ToggleSave
 
         if ($savable->savedUsers()->where('user_id', $user->id)->exists()) {
             return $this->unSave->handle($user, $savable);
-        } else {
-            return $this->save->handle($user, $savable);
         }
+
+        return $this->save->handle($user, $savable);
+
     }
 }
