@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('likes', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table): void {
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->numericMorphs('likable');
             $table->timestamp('created_at')->useCurrent();

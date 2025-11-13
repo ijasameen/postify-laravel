@@ -8,15 +8,16 @@ use App\Traits\HasIdentity;
 use App\Traits\Likable;
 use App\Traits\Savable;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Database\Factories\PostFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Date;
 
 final class Post extends Model
 {
-    /** @use HasFactory<\Database\Factories\PostFactory> */
+    /** @use HasFactory<PostFactory> */
     use HasFactory, HasIdentity, Likable, Savable, Sluggable;
 
     public function user(): BelongsTo
@@ -31,8 +32,8 @@ final class Post extends Model
 
     public function getPostedTimeText(): string
     {
-        $nowDate = Carbon::now();
-        $postedDate = Carbon::parse($this->created_at);
+        $nowDate = Date::now();
+        $postedDate = Date::parse($this->created_at);
 
         return $postedDate->diffForHumans($nowDate);
     }

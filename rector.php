@@ -33,7 +33,6 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__.'/app',
         __DIR__.'/bootstrap/app.php',
-        __DIR__.'/bootstrap/providers.php',
         __DIR__.'/config',
         __DIR__.'/database',
         __DIR__.'/public',
@@ -49,6 +48,5 @@ return RectorConfig::configure()
         typeDeclarations: true,
         privatization: true,
         earlyReturn: true,
-        strictBooleans: true,
     )
     ->withPhpSets();

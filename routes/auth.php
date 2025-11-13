@@ -9,7 +9,7 @@ use App\Http\Controllers\SendEmailVerificationController;
 use App\Http\Controllers\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
+Route::middleware('guest')->group(function (): void {
     Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
     Route::post('login', [AuthenticatedSessionController::class, 'store'])->name('login.store');
 
@@ -17,7 +17,7 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [RegisteredUserController::class, 'store'])->name('register.store');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function (): void {
     Route::delete('login', [AuthenticatedSessionController::class, 'destroy'])->name('login.destroy');
     Route::post('/email/verification-notification', SendEmailVerificationController::class)
         ->middleware('throttle:6,1')->name('verification.send');

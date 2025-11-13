@@ -6,7 +6,7 @@ namespace App\Actions\Likable;
 
 use App\Models\User;
 
-final class ToggleLike
+final readonly class ToggleLike
 {
     public function __construct(private Like $like, private Unlike $unlike) {}
 

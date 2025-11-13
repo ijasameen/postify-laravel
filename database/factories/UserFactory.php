@@ -11,14 +11,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\User>
+ * @extends Factory<User>
  */
 final class UserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    private static ?string $password;
 
     /**
      * Define the model's default state.
@@ -27,8 +27,8 @@ final class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $firstName = fake()->firstName;
-        $lastName = fake()->lastName;
+        $firstName = fake()->firstName();
+        $lastName = fake()->lastName();
         $username = SlugService::createSlug(User::class, 'username', "$firstName $lastName");
 
         return [
@@ -47,7 +47,7 @@ final class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'email_verified_at' => null,
         ]);
     }

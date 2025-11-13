@@ -42,17 +42,15 @@ final class AppServiceProvider extends ServiceProvider
             Reply::getClassKey() => Reply::class,
         ]);
 
-        Password::defaults(function () {
-            return app()->isProduction()
-                ? Password::min(8)
-                    ->max(255)
-                    ->letters()
-                    ->mixedCase()
-                    ->numbers()
-                    ->symbols()
-                    ->uncompromised()
-                : Password::min(3);
-        });
+        Password::defaults(fn () => app()->isProduction()
+            ? Password::min(8)
+                ->max(255)
+                ->letters()
+                ->mixedCase()
+                ->numbers()
+                ->symbols()
+                ->uncompromised()
+            : Password::min(3));
 
         Date::use(CarbonImmutable::class);
     }

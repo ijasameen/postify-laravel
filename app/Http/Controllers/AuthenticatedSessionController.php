@@ -5,19 +5,21 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use Illuminate\Cache\RateLimiter;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class AuthenticatedSessionController extends Controller
 {
-    public function create()
+    public function create(): View
     {
         return view('auth.login');
     }
 
-    public function store(Request $request, RateLimiter $limiter)
+    public function store(Request $request, RateLimiter $limiter): RedirectResponse
     {
         $request->validate([
             'email' => ['required', 'string', 'email'],
@@ -59,7 +61,7 @@ final class AuthenticatedSessionController extends Controller
         return redirect()->intended(route('home'), 301);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
         Auth::logout();
 

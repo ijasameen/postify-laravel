@@ -22,7 +22,7 @@ Route::get('{user:username}/posts', ProfilePostsController::class)->name('profil
 Route::get('{user:username}/replies', ProfileRepliesController::class)->name('profile.replies');
 Route::get('{user:username}/saved', ProfileSavedController::class)->name('profile.saved');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::post('posts', [PostController::class, 'store'])->name('posts.store');
     Route::patch('posts', [PostController::class, 'update'])->name('posts.update');
     Route::delete('posts', [PostController::class, 'destroy'])->name('posts.destroy');

@@ -11,14 +11,15 @@ use App\Actions\Likable\Unlike;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class LikeController extends Controller
 {
     public function __construct(
-        protected GetMorphable $getMorphable,
+        private readonly GetMorphable $getMorphable,
     ) {}
 
-    public function store(Request $request, Like $like)
+    public function store(Request $request, Like $like): RedirectResponse
     {
         $request->validate([
             'likable_id' => ['required', 'integer'],
@@ -38,11 +39,11 @@ final class LikeController extends Controller
 
             return redirect($to);
         }
-        abort(404);
 
+        return back(301);
     }
 
-    public function update(Request $request, ToggleLike $toggleLike)
+    public function update(Request $request, ToggleLike $toggleLike): RedirectResponse
     {
         $request->validate([
             'likable_id' => ['required', 'integer'],
@@ -62,12 +63,11 @@ final class LikeController extends Controller
 
             return redirect($to);
         }
-        abort(404);
 
         return back(301);
     }
 
-    public function destroy(Request $request, Unlike $unlike)
+    public function destroy(Request $request, Unlike $unlike): RedirectResponse
     {
         $request->validate([
             'likable_id' => ['required', 'integer'],
@@ -87,7 +87,6 @@ final class LikeController extends Controller
 
             return redirect($to);
         }
-        abort(404);
 
         return back(301);
     }

@@ -18,11 +18,9 @@ final class ReplyController extends Controller
         ]);
 
         $user = $request->user();
-        $post = Post::find($request->integer('post_id'));
+        $post = Post::query()->find($request->integer('post_id'));
 
-        if (! $post) {
-            abort(404);
-        }
+        abort_unless($post, 404);
 
         $post->replies()->create([
             'body' => $request->body,

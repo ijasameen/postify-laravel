@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Post;
 use App\Models\Reply;
-use App\Models\User;
-use Cviebrock\EloquentSluggable\Services\SlugService;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -35,7 +32,7 @@ final class DatabaseSeeder extends Seeder
         // ]);
 
         Reply::factory(50)->create([
-            'user_id' => fn () => rand(1, 3),
+            'user_id' => fn (): int => random_int(1, 3),
             'post_id' => fn () => fake()->randomElement([
                 21,
                 23,

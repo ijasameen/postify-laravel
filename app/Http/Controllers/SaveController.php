@@ -9,13 +9,15 @@ use App\Actions\Savable\Save;
 use App\Actions\Savable\ToggleSave;
 use App\Actions\Savable\UnSave;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Illuminate\Validation\Rule;
 
 final class SaveController extends Controller
 {
     public function __construct(
-        protected GetMorphable $getMorphable,
+        private readonly GetMorphable $getMorphable,
     ) {}
 
     public function store(Request $request, Save $save)
@@ -42,7 +44,7 @@ final class SaveController extends Controller
 
     }
 
-    public function update(Request $request, ToggleSave $toggleSave)
+    public function update(Request $request, ToggleSave $toggleSave): Redirector|RedirectResponse
     {
         $request->validate([
             'savable_id' => ['required', 'integer'],
@@ -67,7 +69,7 @@ final class SaveController extends Controller
         return back(301);
     }
 
-    public function destroy(Request $request, UnSave $unSave)
+    public function destroy(Request $request, UnSave $unSave): Redirector|RedirectResponse
     {
         $request->validate([
             'savable_id' => ['required', 'integer'],

@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 final class PostController extends Controller
 {
-    public function create()
+    public function create(): View
     {
         return view('posts.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'title' => ['required', 'string', 'min:6', 'max:120'],
@@ -33,18 +35,16 @@ final class PostController extends Controller
         ], status: 301);
     }
 
-    public function show(Post $post, string $slug)
+    public function show(Post $post, string $slug): View|RedirectResponse
     {
         $post
             ->loadCount(['likedUsers', 'savedUsers'])
             ->loadMissing([
                 'user',
-                'replies' => function ($query) {
-                    return $query
-                        ->orderByDesc('created_at')
-                        ->withCount(['likedUsers', 'savedUsers'])
-                        ->with(['user', 'likedAuthenticatedUsers', 'savedAuthenticatedUsers']);
-                },
+                'replies' => fn ($query) => $query
+                    ->orderByDesc('created_at')
+                    ->withCount(['likedUsers', 'savedUsers'])
+                    ->with(['user', 'likedAuthenticatedUsers', 'savedAuthenticatedUsers']),
                 'likedAuthenticatedUsers',
                 'savedAuthenticatedUsers',
             ]);
@@ -59,13 +59,11 @@ final class PostController extends Controller
         return view('posts.show', ['post' => $post]);
     }
 
-    public function edit(Request $request, Post $post, string $slug)
+    public function edit(Request $request, Post $post, string $slug): View|RedirectResponse
     {
         $post->load('user');
 
-        if ($post->user !== $request->user()) {
-            abort(401, 'Your unauthorized to edit this post.');
-        }
+        abort_if($post->user->id !== $request->user()->id, 401, 'Your unauthorized to edit this post.');
 
         if ($post->slug !== $slug) {
             return to_route('posts.edit', [
@@ -77,7 +75,7 @@ final class PostController extends Controller
         return view('posts.edit', ['post' => $post]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request): RedirectResponse
     {
         $request->validate([
             'id' => ['required', 'integer'],
@@ -105,13 +103,13 @@ final class PostController extends Controller
         ], status: 301);
     }
 
-    public function destroy(Request $request)
+    public function destroy(Request $request): RedirectResponse
     {
         $request->validate([
             'id' => ['required', 'integer'],
         ]);
 
-        $post = Post::find($request->integer('id'));
+        $post = Post::query()->find($request->integer('id'));
         $user = $request->user();
 
         if (! $post) {

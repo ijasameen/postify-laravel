@@ -6,7 +6,7 @@ namespace App\Actions\Savable;
 
 use App\Models\User;
 
-final class ToggleSave
+final readonly class ToggleSave
 {
     public function __construct(private Save $save, private UnSave $unSave) {}
 

@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -13,7 +15,7 @@ use Illuminate\Validation\Rules\Password;
 
 final class RegisteredUserController extends Controller
 {
-    public function create()
+    public function create(): Factory|View
     {
         return view('auth.register');
     }
@@ -27,7 +29,7 @@ final class RegisteredUserController extends Controller
             'password' => ['required', 'string', Password::defaults(), 'confirmed'],
         ]);
 
-        $user = User::create([
+        $user = User::query()->create([
             'first_name' => $request->input('firstName'),
             'last_name' => $request->input('lastName'),
             'email' => Str::lower($request->input('email')),

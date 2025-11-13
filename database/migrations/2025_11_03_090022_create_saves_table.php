@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('saves', function (Blueprint $table) {
+        Schema::create('saves', function (Blueprint $table): void {
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->numericMorphs('savable');
             $table->timestamp('created_at')->useCurrent();

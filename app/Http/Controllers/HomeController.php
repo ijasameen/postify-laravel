@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use Illuminate\Contracts\View\View;
 
 final class HomeController extends Controller
 {
-    public function __invoke()
+    public function __invoke(): View
     {
-        $posts = Post::withCount(['replies', 'likedUsers', 'savedUsers'])
-            ->orderByDesc('created_at')
+        $posts = Post::query()->withCount(['replies', 'likedUsers', 'savedUsers'])->latest()
             ->with([
                 'user',
                 'likedAuthenticatedUsers',

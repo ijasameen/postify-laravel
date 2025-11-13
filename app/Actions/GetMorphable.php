@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Stringable;
 
 final class GetMorphable
 {
-    public function handle(string $likableTypeAlias, int $likableId): mixed
+    public function handle(string|Stringable $likableTypeAlias, int $likableId): mixed
     {
-        $likable_type = Relation::getMorphedModel($likableTypeAlias);
-        $likable = $likable_type::find($likableId);
+        $likable_type = Relation::getMorphedModel((string) $likableTypeAlias);
 
-        return $likable;
+        return $likable_type::find($likableId);
     }
 }
